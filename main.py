@@ -1,22 +1,22 @@
 class Event:
-    def __init__(self, idd, event_name, date, location, price, tickets, seats):
+    def __init__(self, idd, event_name, date, location, price, free_tickets):
         self._idd = idd
         self._event_name = event_name
         self._date = date
         self._location = location
         self._price = price
-        self._tickets = tickets
-        self._seats = seats
+        self._free_tickets = free_tickets
+        self._free_seats = free_tickets
 
     def __repr__(self):
-        return (f"Event(id={self._idd}, event_name='{self._event_name}', date={self._date}, location='{self._location}'"
-                f", price={self._price}")
+        return (f"Event(id = {self._idd}, event_name = '{self._event_name}', date = '{self._date}', "
+                f"location = '{self._location}', price={self._price}, free_tickets = {self._free_tickets} , "
+                f"free_seats = {self._free_seats})")
 
 class SportEvent(Event):
-    def __init__(self, idd, event_name, date, location, price, tickets, seats, sector, type_of_sport):
-        Event.__init__(self, idd, event_name, date, location, price, tickets, seats)
+    def __init__(self, idd, event_name, date, location, price, free_tickets, sector):
+        Event.__init__(self, idd, event_name, date, location, price, free_tickets)
         self._sector = sector
-        self._type_of_sport = type_of_sport
         self._menu_food = ['cola', 'water', 'beer', 'chips', 'popcorn', 'hot_dog']
         self._order_food = []
         self._menu_souvenirs = ['trinket', 'stickers', 'cap', 'ball', 'scarf']
@@ -38,23 +38,47 @@ class SportEvent(Event):
         else:
             return "This is not on the list"
 
+    def __repr__(self):
+        return (f"Event(id = {self._idd}, event_name = '{self._event_name}', date = '{self._date}', "
+                f"location = '{self._location}', price={self._price}, free_tickets = {self._free_tickets} , "
+                f"free_seats = {self._free_seats}, sector = '{self._sector}')")
+
 class Concert(Event):
-    def __init__(self, idd, event_name, date, location, price, tickets, seats, artist, genre_of_music):
-        Event.__init__(self, idd, event_name, date, location, price, tickets, seats)
+    def __init__(self, idd, event_name, date, location, price, free_tickets, artist, genre_of_music):
+        Event.__init__(self, idd, event_name, date, location, price, free_tickets)
         self._genre_of_music = genre_of_music
         self._artist = artist
+        self._promo_code = ['The first purchase', 'Autumn', 'APT']
+        self._key = 0
 
-    def find_out_the_location(self):
-        if 1 <= self._seats <= 100:
-            return "Your seat in the VIP zone"
-        if 100 <= self._seats <= 500:
-            return "Your seat in the dance floor area"
-        if 500 <= self._seats <= 1000:
-            return "Your seat in the balcony area"
+    def get_promo_code(self, item):
+        if item in self._promo_code:
+            if item == self._promo_code[0] and self._key == 0:
+                self._key += 1
+                self._price = int((self._price - self._price * 0.2))
+                return "The promo code has been successfully applied"
+            elif item == self._promo_code[1] and self._key == 0:
+                self._key += 1
+                self._price = int((self._price - self._price * 0.1))
+                return "The promo code has been successfully applied"
+            elif item == self._promo_code[2] and self._key == 0:
+                self._key += 1
+                self._price = int((self._price - self._price * 0.15))
+                return "The promo code has been successfully applied"
+            else:
+                return "The promo code has already been applied to this ticket"
+        else:
+            return "The promo code is not suitable"
+
+    def __repr__(self):
+        return (f"Event(id = {self._idd}, event_name = '{self._event_name}', date = '{self._date}', "
+                f"location = '{self._location}', price={self._price}, free_tickets = {self._free_tickets} , "
+                f"free_seats = {self._free_seats}, genre_of_music = '{self._genre_of_music}', "
+                f"artist = '{self._artist}')")
 
 class Cinema(Event):
-    def __init__(self, idd, event_name, date, location, price, tickets, seats, forms, age_limit):
-        Event.__init__(self, idd, event_name, date, location, price, tickets, seats)
+    def __init__(self, idd, event_name, date, location, price, tickets, forms, age_limit):
+        Event.__init__(self, idd, event_name, date, location, price, tickets)
         self._forms = forms
         self._age_limit = age_limit
         self._menu_food_cinema = ['cola', 'water', 'chips', 'popcorn', 'hot_dog', 'juice', 'nachos']
@@ -68,11 +92,15 @@ class Cinema(Event):
         else:
             return "This is not on the menu"
 
+    def __repr__(self):
+        return (f"Event(id = {self._idd}, event_name = '{self._event_name}', date = '{self._date}', "
+                f"location = '{self._location}', price={self._price}, free_tickets = {self._free_tickets} , "
+                f"free_seats = {self._free_seats}, forms = '{self._forms}', age_limit = {self._age_limit})")
+
 class Theatre(Event):
-    def __init__(self, idd, event_name, date, location, price, tickets, seats, genre, cast):
-        Event.__init__(self, idd, event_name, date, location, price, tickets, seats)
+    def __init__(self, idd, event_name, date, location, price, tickets, genre):
+        Event.__init__(self, idd, event_name, date, location, price, tickets)
         self._genre = genre
-        self._cast = cast
         self._booklet = {
             'Romeo and Juliet': 'The duration is 2 hours. About the play: "Romeo and Juliet" is one of the most famous '
                                 'and beloved tragedies by William Shakespeare, telling about the passionate love of two'
@@ -97,3 +125,24 @@ class Theatre(Event):
             return booklet
         else:
             return "There are no booklets for this performance"
+
+    def __repr__(self):
+        return (f"Event(id = {self._idd}, event_name = '{self._event_name}', date = '{self._date}', "
+                f"location = '{self._location}', price={self._price}, free_tickets = {self._free_tickets} , "
+                f"free_seats = {self._free_seats}, genre = '{self._genre}')")
+
+
+event_1 = SportEvent(1, "Football match", "2024.12.01", "Stadium A", 500,
+                     200, "Sector A")
+print(event_1)
+print(event_1.order_food('cola'))
+print(event_1.order_souvenirs('cap'))
+print(event_1)
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+event_2 = Concert(2, "Rock Concert", "2024-12-05", "Arena B", 800, 300,
+                  "Rock Band", "Rock")
+print(event_2)
+print(event_2.get_promo_code('Autumn'))
+print(event_2)
+print(event_2.get_promo_code('APT'))
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
