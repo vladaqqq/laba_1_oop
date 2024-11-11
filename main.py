@@ -85,7 +85,7 @@ class Cinema(Event):
         self._order_food_cinema = []
 
     def order_for_cinema(self, item):
-        if item is self._menu_food_cinema:
+        if item in self._menu_food_cinema:
             self._price += 150
             self._order_food_cinema.append(item)
             return f"Append(order='{self._order_food_cinema}', price={self._price}"
@@ -132,6 +132,19 @@ class Theatre(Event):
                 f"free_seats = {self._free_seats}, genre = '{self._genre}')")
 
 
+class Person:
+    def __init__(self, name, age, mail, phone_number):
+        self._name = name
+        self._age = age
+        self._mail = mail
+        self._phone_number = phone_number
+
+    def __repr__(self):
+        return (f"Person(id = '{self._name}', age = {self._age}, mail = '{self._date}', "
+                f"phone_number = {self._phone_number})")
+
+
+
 event_1 = SportEvent(1, "Football match", "2024.12.01", "Stadium A", 500,
                      200, "Sector A")
 print(event_1)
@@ -139,10 +152,21 @@ print(event_1.order_food('cola'))
 print(event_1.order_souvenirs('cap'))
 print(event_1)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-event_2 = Concert(2, "Rock Concert", "2024-12-05", "Arena B", 800, 300,
+event_2 = Concert(2, "Rock Concert", "2024.12.05", "Arena B", 800, 300,
                   "Rock Band", "Rock")
 print(event_2)
 print(event_2.get_promo_code('Autumn'))
 print(event_2)
 print(event_2.get_promo_code('APT'))
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+event_3 = Cinema(3, "Going to the cinema", "2024.11.12", "CARO", 450, 10,
+                 "2D", 16)
+print(event_3)
+print(event_3.order_for_cinema('chips'))
+print(event_3.order_for_cinema('beer'))
+print(event_3)
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+event_4 = Theatre(3, "Romeo and Juliet", "2025.12.10", "The Big theatre", 7500,
+                  200, 'tragedy')
+print(event_4)
+print(event_4.get_the_booklet('Romeo and Juliet'))
