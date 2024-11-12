@@ -1,3 +1,4 @@
+
 class Person:
     def __init__(self, name, age, mail, phone_number):
         self._name = name
@@ -37,6 +38,7 @@ class Event:
         else:
             self._free_seats = value
 
+
 class SportEvent(Event):
     def __init__(self, idd, event_name, date, location, price, free_tickets, sector):
         Event.__init__(self, idd, event_name, date, location, price, free_tickets)
@@ -66,6 +68,7 @@ class SportEvent(Event):
         return (f"Event(id = {self._idd}, event_name = '{self._event_name}', date = '{self._date}', "
                 f"location = '{self._location}', price={self._price}, free_tickets = {self._free_tickets} , "
                 f"free_seats = {self._free_seats}, sector = '{self._sector}')")
+
 
 class Concert(Event):
     def __init__(self, idd, event_name, date, location, price, free_tickets, artist, genre_of_music):
@@ -100,6 +103,7 @@ class Concert(Event):
                 f"free_seats = {self._free_seats}, genre_of_music = '{self._genre_of_music}', "
                 f"artist = '{self._artist}')")
 
+
 class Cinema(Event):
     def __init__(self, idd, event_name, date, location, price, tickets, forms, age_limit):
         Event.__init__(self, idd, event_name, date, location, price, tickets)
@@ -124,6 +128,7 @@ class Cinema(Event):
     def get_age_limit(self):
         return self._age_limit
 
+
 class Theatre(Event):
     def __init__(self, idd, event_name, date, location, price, tickets, genre):
         Event.__init__(self, idd, event_name, date, location, price, tickets)
@@ -131,14 +136,16 @@ class Theatre(Event):
         self._booklet = {
             'Romeo and Juliet': 'The duration is 2 hours. About the play: "Romeo and Juliet" is one of the most famous '
                                 'and beloved tragedies by William Shakespeare, telling about the passionate love of two'
-                                ' young people, Romeo and Juliet, belonging to warring families. Their feelings become a'
-                                'symbol of hope for peace, but circumstances and prejudices lead to tragic consequences',
+                                ' young people, Romeo and Juliet, belonging to warring families. '
+                                'Their feelings become a symbol of hope for peace, but circumstances'
+                                ' and prejudices lead to tragic consequences',
             'The master and Margarita': 'The duration is 3 hours. About the play: "The Master and Margarita" is a '
                                         'masterpiece by Mikhail Bulgakov, which combines elements of fiction, '
                                         'philosophy and love. The performance takes the audience into a world where '
                                         'reality and fiction meet, good and evil, as well as eternal questions about '
                                         'love and freedom',
-            'The Nutcracker and the Mouse King': 'The duration is 2 hours.About the play: "The Nutcracker and the Mouse '
+            'The Nutcracker and the Mouse King': 'The duration is 2 hours.About the '
+                                                 'play: "The Nutcracker and the Mouse '
                                                  'King" is a fairy tale written by the German writer Ernst Theodor '
                                                  'Amadeus Hoffmann in 1816. It tells about the magical adventures of a '
                                                  'girl named Clara and her toy nutcracker, who comes to life the night '
@@ -160,9 +167,9 @@ class Theatre(Event):
 
 
 class Booking:
+    booking_id_counter = 0
     def __init__(self, event):
         self._bookings = []
-        self._booking_id_counter = 1
         self._booking_seat = list(range(1, event.get_free_tickets() + 1))
 
     def create(self, person, event, booking_seat_num):
@@ -171,9 +178,9 @@ class Booking:
                 if 50 < booking_seat_num <= len(self._booking_seat):
                     if booking_seat_num in self._booking_seat:
                         self._booking_seat.remove(booking_seat_num)
-                        booking_id = self._booking_id_counter
+                        Booking.booking_id_counter += 1
                         booking_ver = {
-                            'booking_id': booking_id,
+                            'booking_id': Booking.booking_id_counter,
                             'person': person,
                             'event': event,
                             'Your seat': booking_seat_num
@@ -181,8 +188,9 @@ class Booking:
                         bok = event.get_free_tickets() - 1
                         event.set_free_tickets(bok)
                         self._bookings.append(booking_ver)
-                        self._booking_id_counter += 1
-                        return f"The reservation has been successfully completed, here is your unique id: {booking_id}"
+
+                        return f"The reservation has been successfully completed, " \
+                               f"here is your unique id: {Booking.booking_id_counter}"
                 else:
                     while True:
                         try:
@@ -198,9 +206,9 @@ class Booking:
                 if 20 < booking_seat_num <= len(self._booking_seat):
                     if booking_seat_num in self._booking_seat:
                         self._booking_seat.remove(booking_seat_num)
-                        booking_id = self._booking_id_counter
+                        Booking.booking_id_counter += 1
                         booking_ver = {
-                            'booking_id': booking_id,
+                            'booking_id': Booking.booking_id_counter,
                             'person': person,
                             'event': event,
                             'your seat': booking_seat_num
@@ -208,13 +216,12 @@ class Booking:
                         bok = event.get_free_tickets() - 1
                         event.set_free_tickets(bok)
                         self._bookings.append(booking_ver)
-                        self._booking_id_counter += 1
-                        return f"The reservation has been successfully completed, here is your unique id: {booking_id}"
+                        return f"The reservation has been successfully completed, here is your unique id: {Booking.booking_id_counter}"
                 else:
                     while True:
                         try:
-                            booking_seat_num = int(
-                                input("Sorry this seat is already booked.Please, choose another one: "))
+                            booking_seat_num = int(input("Sorry this seat is already booked."
+                                                         "Please, choose another one: "))
                             break
                         except ValueError:
                             print("Sorry this seat is already booked.Please, choose another one: ")
@@ -223,9 +230,9 @@ class Booking:
                 if 200 < booking_seat_num <= len(self._booking_seat):
                     if booking_seat_num in self._booking_seat:
                         self._booking_seat.remove(booking_seat_num)
-                        booking_id = self._booking_id_counter
+                        Booking.booking_id_counter += 1
                         booking_ver = {
-                            'booking_id': booking_id,
+                            'booking_id': Booking.booking_id_counter,
                             'person': person,
                             'event': event,
                             'your seat': booking_seat_num
@@ -233,13 +240,12 @@ class Booking:
                         bok = event.get_free_tickets() - 1
                         event.set_free_tickets(bok)
                         self._bookings.append(booking_ver)
-                        self._booking_id_counter += 1
-                        return f"The reservation has been successfully completed, here is your unique id: {booking_id}"
+                        return f"The reservation has been successfully completed, here is your unique id: {Booking.booking_id_counter}"
                 else:
                     while True:
                         try:
-                            booking_seat_num = int(
-                                input("Sorry this seat is already booked.Please, choose another one: "))
+                            booking_seat_num = int(input("Sorry this seat is already booked."
+                                                         "Please, choose another one: "))
                             break
                         except ValueError:
                             print("Sorry this seat is already booked.Please, choose another one: ")
@@ -248,9 +254,9 @@ class Booking:
                 if 200 < booking_seat_num <= len(self._booking_seat):
                     if booking_seat_num in self._booking_seat:
                         self._booking_seat.remove(booking_seat_num)
-                        booking_id = self._booking_id_counter
+                        Booking.booking_id_counter += 1
                         booking_ver = {
-                            'booking_id': booking_id,
+                            'booking_id': Booking.booking_id_counter,
                             'person': person,
                             'event': event,
                             'your seat': booking_seat_num
@@ -258,21 +264,20 @@ class Booking:
                         bok = event.get_free_tickets() - 1
                         event.set_free_tickets(bok)
                         self._bookings.append(booking_ver)
-                        self._booking_id_counter += 1
-                        return f"The reservation has been successfully completed, here is your unique id: {booking_id}"
+                        return f"The reservation has been successfully completed, here is your unique id: {Booking.booking_id_counter}"
                 else:
                     while True:
                         try:
-                            booking_seat_num = int(
-                                input("Sorry this seat is already booked.Please, choose another one: "))
+                            booking_seat_num = (input("Sorry this seat is already booked.Please, choose another one: "))
                             break
                         except ValueError:
-                            print("Sorry this seat is already booked.Please, choose another one: ")
+                            print("Sorry this seat is already booked.Please, choose another one:")
 
     def read_all(self):
         return self._bookings
 
     # def update(self):
+
 
 event_1 = SportEvent(1, "Football match", "2024.12.01", "Stadium A", 500,
                      200, "Sector A")
@@ -299,9 +304,12 @@ event_4 = Theatre(3, "Romeo and Juliet", "2025.12.10", "The Big theatre", 7500,
                   200, 'tragedy')
 print(event_4)
 print(event_4.get_the_booklet('Romeo and Juliet'))
-
+print("______________________________________________________________________________________________________________")
 person_1 = Person("Alice", 25, "alice@example.com", "1234567890")
 
 booking = Booking(event_1)
 print(booking.create(person_1, event_1, 129))
 print(booking.read_all())
+booking_1 = Booking(event_2)
+print(booking_1.create(person_1, event_2, 129))
+print(booking_1.read_all())
