@@ -175,7 +175,8 @@ class Booking:
                         booking_ver = {
                             'booking_id': booking_id,
                             'person': person,
-                            'event': event
+                            'event': event,
+                            'Your seat': booking_seat_num
                         }
                         bok = event.get_free_tickets() - 1
                         event.set_free_tickets(bok)
@@ -201,7 +202,8 @@ class Booking:
                         booking_ver = {
                             'booking_id': booking_id,
                             'person': person,
-                            'event': event
+                            'event': event,
+                            'your seat': booking_seat_num
                         }
                         bok = event.get_free_tickets() - 1
                         event.set_free_tickets(bok)
@@ -225,7 +227,8 @@ class Booking:
                         booking_ver = {
                             'booking_id': booking_id,
                             'person': person,
-                            'event': event
+                            'event': event,
+                            'your seat': booking_seat_num
                         }
                         bok = event.get_free_tickets() - 1
                         event.set_free_tickets(bok)
@@ -249,7 +252,8 @@ class Booking:
                         booking_ver = {
                             'booking_id': booking_id,
                             'person': person,
-                            'event': event
+                            'event': event,
+                            'your seat': booking_seat_num
                         }
                         bok = event.get_free_tickets() - 1
                         event.set_free_tickets(bok)
@@ -264,6 +268,11 @@ class Booking:
                             break
                         except ValueError:
                             print("Sorry this seat is already booked.Please, choose another one: ")
+
+    def read_all(self):
+        return self._bookings
+
+    # def update(self):
 
 event_1 = SportEvent(1, "Football match", "2024.12.01", "Stadium A", 500,
                      200, "Sector A")
@@ -295,3 +304,4 @@ person_1 = Person("Alice", 25, "alice@example.com", "1234567890")
 
 booking = Booking(event_1)
 print(booking.create(person_1, event_1, 129))
+print(booking.read_all())
