@@ -15,33 +15,36 @@ class Person:
 
 
 class Event:
-    def __init__(self, idd, event_name, date, location, price, free_tickets):
+    def __init__(self, idd, event_name, date, location, price, free_tickets, booked_tickets):
         self._idd = idd
         self._event_name = event_name
         self._date = date
         self._location = location
         self._price = price
         self._free_tickets = free_tickets
-        self._free_seats = free_tickets
+        self._booked_tickets = booked_tickets
 
     def __repr__(self):
         return (f"Event(id = {self._idd}, event_name = '{self._event_name}', date = '{self._date}', "
                 f"location = '{self._location}', price={self._price}, free_tickets = {self._free_tickets} , "
-                f"free_seats = {self._free_seats})")
+                f"booked_tickets = {self._booked_tickets})")
 
     def get_free_tickets(self):
         return self._free_tickets
+
+    def get_booked_tickets(self):
+        return self._booked_tickets
 
     def set_free_tickets(self, value):
         if value < 0:
             print("Error: Cannot have negative free seats.")
         else:
-            self._free_seats = value
+            self._free_tickets = value
 
 
 class SportEvent(Event):
-    def __init__(self, idd, event_name, date, location, price, free_tickets, sector):
-        Event.__init__(self, idd, event_name, date, location, price, free_tickets)
+    def __init__(self, idd, event_name, date, location, price, free_tickets, booked_tickets, sector):
+        Event.__init__(self, idd, event_name, date, location, price, free_tickets, booked_tickets)
         self._sector = sector
         self._menu_food = ['cola', 'water', 'beer', 'chips', 'popcorn', 'hot_dog']
         self._order_food = []
@@ -67,12 +70,12 @@ class SportEvent(Event):
     def __repr__(self):
         return (f"Event(id = {self._idd}, event_name = '{self._event_name}', date = '{self._date}', "
                 f"location = '{self._location}', price={self._price}, free_tickets = {self._free_tickets} , "
-                f"free_seats = {self._free_seats}, sector = '{self._sector}')")
+                f"booked_tickets = {self._booked_tickets}, sector = '{self._sector}')")
 
 
 class Concert(Event):
-    def __init__(self, idd, event_name, date, location, price, free_tickets, artist, genre_of_music):
-        Event.__init__(self, idd, event_name, date, location, price, free_tickets)
+    def __init__(self, idd, event_name, date, location, price, free_tickets, booked_tickets, artist, genre_of_music):
+        Event.__init__(self, idd, event_name, date, location, price, free_tickets, booked_tickets)
         self._genre_of_music = genre_of_music
         self._artist = artist
         self._promo_code = ['The first purchase', 'Autumn', 'APT']
@@ -100,13 +103,13 @@ class Concert(Event):
     def __repr__(self):
         return (f"Event(id = {self._idd}, event_name = '{self._event_name}', date = '{self._date}', "
                 f"location = '{self._location}', price={self._price}, free_tickets = {self._free_tickets} , "
-                f"free_seats = {self._free_seats}, genre_of_music = '{self._genre_of_music}', "
+                f"booked_tickets = {self._booked_tickets}, genre_of_music = '{self._genre_of_music}', "
                 f"artist = '{self._artist}')")
 
 
 class Cinema(Event):
-    def __init__(self, idd, event_name, date, location, price, tickets, forms, age_limit):
-        Event.__init__(self, idd, event_name, date, location, price, tickets)
+    def __init__(self, idd, event_name, date, location, price, free_tickets, booked_tickets, forms, age_limit):
+        Event.__init__(self, idd, event_name, date, location, price, free_tickets, booked_tickets)
         self._forms = forms
         self._age_limit = age_limit
         self._menu_food_cinema = ['cola', 'water', 'chips', 'popcorn', 'hot_dog', 'juice', 'nachos']
@@ -123,15 +126,15 @@ class Cinema(Event):
     def __repr__(self):
         return (f"Event(id = {self._idd}, event_name = '{self._event_name}', date = '{self._date}', "
                 f"location = '{self._location}', price={self._price}, free_tickets = {self._free_tickets} , "
-                f"free_seats = {self._free_seats}, forms = '{self._forms}', age_limit = {self._age_limit})")
+                f"booked_tickets = {self._booked_tickets}, forms = '{self._forms}', age_limit = {self._age_limit})")
 
     def get_age_limit(self):
         return self._age_limit
 
 
 class Theatre(Event):
-    def __init__(self, idd, event_name, date, location, price, tickets, genre):
-        Event.__init__(self, idd, event_name, date, location, price, tickets)
+    def __init__(self, idd, event_name, date, location, price, free_tickets, booked_tickets, genre):
+        Event.__init__(self, idd, event_name, date, location, price, free_tickets, booked_tickets)
         self._genre = genre
         self._booklet = {
             'Romeo and Juliet': 'The duration is 2 hours. About the play: "Romeo and Juliet" is one of the most famous '
@@ -163,19 +166,21 @@ class Theatre(Event):
     def __repr__(self):
         return (f"Event(id = {self._idd}, event_name = '{self._event_name}', date = '{self._date}', "
                 f"location = '{self._location}', price={self._price}, free_tickets = {self._free_tickets} , "
-                f"free_seats = {self._free_seats}, genre = '{self._genre}')")
+                f"booked_tickets = {self._booked_tickets}, genre = '{self._genre}')")
 
 
 class Booking:
     booking_id_counter = 0
     def __init__(self, event):
         self._bookings = []
-        self._booking_seat = list(range(1, event.get_free_tickets() + 1))
+        self._booking_seat = list(range(event.get_booked_tickets(), event.get_free_tickets()
+                                        + event.get_booked_tickets() + 1))
 
     def create(self, person, event, booking_seat_num):
         if isinstance(event, SportEvent):
             while True:
-                if 50 < booking_seat_num <= len(self._booking_seat):
+                if event.get_booked_tickets() < booking_seat_num <= (event.get_free_tickets()
+                                                                     + event.get_booked_tickets()):
                     if booking_seat_num in self._booking_seat:
                         self._booking_seat.remove(booking_seat_num)
                         Booking.booking_id_counter += 1
@@ -203,7 +208,8 @@ class Booking:
             if person.get_age() < event.get_age_limit():
                 return "Sorry, u cant book ticket for this event"
             while True:
-                if 20 < booking_seat_num <= len(self._booking_seat):
+                if event.get_booked_tickets() < booking_seat_num <= (event.get_free_tickets()
+                                                                     + event.get_booked_tickets()):
                     if booking_seat_num in self._booking_seat:
                         self._booking_seat.remove(booking_seat_num)
                         Booking.booking_id_counter += 1
@@ -216,7 +222,8 @@ class Booking:
                         bok = event.get_free_tickets() - 1
                         event.set_free_tickets(bok)
                         self._bookings.append(booking_ver)
-                        return f"The reservation has been successfully completed, here is your unique id: {Booking.booking_id_counter}"
+                        return (f"The reservation has been successfully completed, here is "
+                                f"your unique id: {Booking.booking_id_counter}")
                 else:
                     while True:
                         try:
@@ -227,7 +234,8 @@ class Booking:
                             print("Sorry this seat is already booked.Please, choose another one: ")
         elif isinstance(event, Concert):
             while True:
-                if 200 < booking_seat_num <= len(self._booking_seat):
+                if event.get_booked_tickets() < booking_seat_num <= (event.get_free_tickets()
+                                                                     + event.get_booked_tickets()):
                     if booking_seat_num in self._booking_seat:
                         self._booking_seat.remove(booking_seat_num)
                         Booking.booking_id_counter += 1
@@ -240,7 +248,8 @@ class Booking:
                         bok = event.get_free_tickets() - 1
                         event.set_free_tickets(bok)
                         self._bookings.append(booking_ver)
-                        return f"The reservation has been successfully completed, here is your unique id: {Booking.booking_id_counter}"
+                        return (f"The reservation has been successfully completed, here "
+                                f"is your unique id: {Booking.booking_id_counter}")
                 else:
                     while True:
                         try:
@@ -251,7 +260,8 @@ class Booking:
                             print("Sorry this seat is already booked.Please, choose another one: ")
         elif isinstance(event, Theatre):
             while True:
-                if 200 < booking_seat_num <= len(self._booking_seat):
+                if event.get_booked_tickets() < booking_seat_num <= (event.get_free_tickets()
+                                                                     + event.get_booked_tickets()):
                     if booking_seat_num in self._booking_seat:
                         self._booking_seat.remove(booking_seat_num)
                         Booking.booking_id_counter += 1
@@ -264,7 +274,8 @@ class Booking:
                         bok = event.get_free_tickets() - 1
                         event.set_free_tickets(bok)
                         self._bookings.append(booking_ver)
-                        return f"The reservation has been successfully completed, here is your unique id: {Booking.booking_id_counter}"
+                        return (f"The reservation has been successfully completed, here is your "
+                                f"unique id: {Booking.booking_id_counter}")
                 else:
                     while True:
                         try:
@@ -280,31 +291,31 @@ class Booking:
 
 
 event_1 = SportEvent(1, "Football match", "2024.12.01", "Stadium A", 500,
-                     200, "Sector A")
+                     200, 50, "Sector A")
 print(event_1)
 print(event_1.order_food('cola'))
 print(event_1.order_souvenirs('cap'))
 print(event_1)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 event_2 = Concert(2, "Rock Concert", "2024.12.05", "Arena B", 800, 300,
-                  "Rock Band", "Rock")
+                  100, "Rock Band", "Rock")
 print(event_2)
 print(event_2.get_promo_code('Autumn'))
 print(event_2)
 print(event_2.get_promo_code('APT'))
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 event_3 = Cinema(3, "Going to the cinema", "2024.11.12", "CARO", 450, 10,
-                 "2D", 16)
+                 25, "2D", 16)
 print(event_3)
 print(event_3.order_for_cinema('chips'))
 print(event_3.order_for_cinema('beer'))
 print(event_3)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 event_4 = Theatre(3, "Romeo and Juliet", "2025.12.10", "The Big theatre", 7500,
-                  200, 'tragedy')
+                  200, 350, 'tragedy')
 print(event_4)
 print(event_4.get_the_booklet('Romeo and Juliet'))
-print("______________________________________________________________________________________________________________")
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 person_1 = Person("Alice", 25, "alice@example.com", "1234567890")
 
 booking = Booking(event_1)
