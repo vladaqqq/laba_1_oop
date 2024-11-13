@@ -328,7 +328,33 @@ class Booking:
     def read_all(self):
         return self._bookings
 
-    # def update(self):
+    def read_by_id(self, booking_id):
+        for boo in self._bookings:
+            if boo['booking_id'] == booking_id:
+                return boo
+        return "No booking found with this ID"
+
+    def update(self, booking_id, new_seat):
+        for boo in self._bookings:
+            if boo['booking_id'] == booking_id:
+                event = boo['event']
+                if new_seat in event.booking_seat:
+                    old_seat = boo['Your seat']
+                    event.booking_seat.append(old_seat)
+                    boo['Your seat'] = new_seat
+                    event.booking_seat.remove(new_seat)
+                    return f"Your ticket with ID {booking_id} is successfully {new_seat}."
+                else:
+                    return "The new location is unavailable or already occupied."
+
+        return "No booking with this ID was found."
+
+    def delete(self, bok_id):
+        bok = self.read_by_id(bok_id)
+        if bok:
+            self._bookings.remove(bok)
+            return f"Person with id {bok_id} has been deleted."
+        return "Person not found."
 
 
 event_1 = SportEvent(1, "Football match", "2024.12.01", "Stadium A", 500,
@@ -362,6 +388,10 @@ person_2 = Person("Sasha", 24, "ce@example.com", "1237890")
 booking = Booking()
 print(booking.create(person_1, event_1, 129))
 print(booking.create(person_2, event_1, 129))
-print(booking.read_all())
 print(booking.create(person_1, event_2, 129))
+print("Read all:")
 print(booking.read_all())
+print("Read by id:")
+print(booking.read_by_id(1))
+print(booking.update(2, 150))
+print(booking.delete(1))
