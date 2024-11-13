@@ -171,18 +171,19 @@ class Theatre(Event):
 
 class Booking:
     booking_id_counter = 0
-    def __init__(self, event):
+
+    def __init__(self):
         self._bookings = []
-        self._booking_seat = list(range(event.get_booked_tickets(), event.get_free_tickets()
-                                        + event.get_booked_tickets() + 1))
 
     def create(self, person, event, booking_seat_num):
+        booking_seat = list(range(event.get_booked_tickets(), event.get_free_tickets()
+                                  + event.get_booked_tickets() + 1))
         if isinstance(event, SportEvent):
             while True:
                 if event.get_booked_tickets() < booking_seat_num <= (event.get_free_tickets()
                                                                      + event.get_booked_tickets()):
-                    if booking_seat_num in self._booking_seat:
-                        self._booking_seat.remove(booking_seat_num)
+                    if booking_seat_num in booking_seat:
+                        booking_seat.remove(booking_seat_num)
                         Booking.booking_id_counter += 1
                         booking_ver = {
                             'booking_id': Booking.booking_id_counter,
@@ -210,8 +211,8 @@ class Booking:
             while True:
                 if event.get_booked_tickets() < booking_seat_num <= (event.get_free_tickets()
                                                                      + event.get_booked_tickets()):
-                    if booking_seat_num in self._booking_seat:
-                        self._booking_seat.remove(booking_seat_num)
+                    if booking_seat_num in booking_seat:
+                        booking_seat.remove(booking_seat_num)
                         Booking.booking_id_counter += 1
                         booking_ver = {
                             'booking_id': Booking.booking_id_counter,
@@ -236,8 +237,8 @@ class Booking:
             while True:
                 if event.get_booked_tickets() < booking_seat_num <= (event.get_free_tickets()
                                                                      + event.get_booked_tickets()):
-                    if booking_seat_num in self._booking_seat:
-                        self._booking_seat.remove(booking_seat_num)
+                    if booking_seat_num in booking_seat:
+                        booking_seat.remove(booking_seat_num)
                         Booking.booking_id_counter += 1
                         booking_ver = {
                             'booking_id': Booking.booking_id_counter,
@@ -262,8 +263,8 @@ class Booking:
             while True:
                 if event.get_booked_tickets() < booking_seat_num <= (event.get_free_tickets()
                                                                      + event.get_booked_tickets()):
-                    if booking_seat_num in self._booking_seat:
-                        self._booking_seat.remove(booking_seat_num)
+                    if booking_seat_num in booking_seat:
+                        booking_seat.remove(booking_seat_num)
                         Booking.booking_id_counter += 1
                         booking_ver = {
                             'booking_id': Booking.booking_id_counter,
@@ -286,6 +287,12 @@ class Booking:
 
     def read_all(self):
         return self._bookings
+
+    def read_by_id(self, booking_id):
+        for boo in self._bookings:
+            if boo['booking_id'] == booking_id:
+                return boo
+        return "No booking found with this ID"
 
     # def update(self):
 
@@ -316,11 +323,8 @@ event_4 = Theatre(3, "Romeo and Juliet", "2025.12.10", "The Big theatre", 7500,
 print(event_4)
 print(event_4.get_the_booklet('Romeo and Juliet'))
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-person_1 = Person("Alice", 25, "alice@example.com", "1234567890")
-
-booking = Booking(event_1)
-print(booking.create(person_1, event_1, 129))
-print(booking.read_all())
-booking_1 = Booking(event_2)
-print(booking_1.create(person_1, event_2, 129))
-print(booking_1.read_all())
+person_1 = Person("Alice", 25, "alice@example.com", "8955020533")
+person_2 = Person("Sasha", 15, "sasha@example.com", "8905795144")
+booking = Booking()
+cheque_1 = booking.create(person_1, event_1, 129)
+cheque_2 = booking.create(person_2, event_2, 127)
