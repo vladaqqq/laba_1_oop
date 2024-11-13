@@ -1,14 +1,14 @@
-
-class Person:
-    def __init__(self, name, age, mail, phone_number):
+class Personal_ticket:
+    def __init__(self, idd, name, age, event_type, personal_seat):
+        self._idd = idd
         self._name = name
         self._age = age
-        self._mail = mail
-        self._phone_number = phone_number
+        self._event_type = event_type
+        self._personal_seat = personal_seat
 
     def __repr__(self):
-        return (f"Person(id = '{self._name}', age = {self._age}, mail = '{self._mail}', "
-                f"phone_number = {self._phone_number})")
+        return (f"Person(id = {self._idd}, name = '{self._name}', age = {self._age}, "
+                f"event_type = '{self._event_type}', personal_seat = {self._personal_seat})")
 
     def get_age(self):
         return self._age
@@ -185,15 +185,10 @@ class Booking:
                     if booking_seat_num in booking_seat:
                         booking_seat.remove(booking_seat_num)
                         Booking.booking_id_counter += 1
-                        booking_ver = {
-                            'booking_id': Booking.booking_id_counter,
-                            'person': person,
-                            'event': event,
-                            'Your seat': booking_seat_num
-                        }
+                        ticket = Personal_ticket(Booking.booking_id_counter, person._name)
                         bok = event.get_free_tickets() - 1
                         event.set_free_tickets(bok)
-                        self._bookings.append(booking_ver)
+                        self._bookings.append()
 
                         return f"The reservation has been successfully completed, " \
                                f"here is your unique id: {Booking.booking_id_counter}"
@@ -323,8 +318,8 @@ event_4 = Theatre(3, "Romeo and Juliet", "2025.12.10", "The Big theatre", 7500,
 print(event_4)
 print(event_4.get_the_booklet('Romeo and Juliet'))
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-person_1 = Person("Alice", 25, "alice@example.com", "8955020533")
-person_2 = Person("Sasha", 15, "sasha@example.com", "8905795144")
+person_1 = Personal_ticket("Alice", 25, "alice@example.com", "8955020533")
+person_2 = Personal_ticket("Sasha", 15, "sasha@example.com", "8905795144")
 booking = Booking()
 cheque_1 = booking.create(person_1, event_1, 129)
 cheque_2 = booking.create(person_2, event_2, 127)
