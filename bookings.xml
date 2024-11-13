@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<bookings>
+    <booking>
+        <booking_id>2</booking_id>
+        <person>Person(id = 'Sasha', age = 24, mail = 'ce@example.com', phone_number = 1237890)</person>
+        <event>Event(id = 1, event_name = 'Football match', date = '2024.12.01', location = 'Stadium A', price=1750,
+            free_tickets = 198 , booked_tickets = 50, sector = 'Sector A')
+        </event>
+        <Your seat>150</Your seat>
+    </booking>
+    <booking>
+        <booking_id>3</booking_id>
+        <person>Person(id = 'Alice', age = 25, mail = 'alice@example.com', phone_number = 1234567890)</person>
+        <event>Event(id = 2, event_name = 'Rock Concert', date = '2024.12.05', location = 'Arena B', price=720,
+            free_tickets = 299 , booked_tickets = 100, genre_of_music = 'Rock', artist = 'Rock Band')
+        </event>
+        <your seat>129</your seat>
+    </booking>
+</bookings>

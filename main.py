@@ -1,3 +1,6 @@
+import json
+import xml.etree.ElementTree as ET
+
 class Person:
     def __init__(self, name, age, mail, phone_number):
         self._name = name
@@ -356,6 +359,26 @@ class Booking:
             return f"Person with id {bok_id} has been deleted."
         return "Person not found."
 
+    def to_json(self, filename="bookings.json"):
+        with open(filename, "w", encoding="utf-8") as json_file:
+            json.dump(self._bookings, json_file, default=lambda o: o.__dict__, indent=4)
+        return f"Data has been saved to {filename}"
+
+    def to_xml(self, filename="bookings.xml"):
+        root = ET.Element("bookings")
+        for boo in self._bookings:
+            booking_element = ET.SubElement(root, "booking")
+
+            for key, value in boo.items():
+                if hasattr(value, '__dict__'):
+                    value = value.__repr__()
+
+                element = ET.SubElement(booking_element, key)
+                element.text = str(value)
+        tree = ET.ElementTree(root)
+        tree.write(filename, encoding="utf-8", xml_declaration=True)
+
+        return f"Data has been saved to {filename}"
 
 event_1 = SportEvent(1, "Football match", "2024.12.01", "Stadium A", 500,
                      200, 50, "Sector A")
@@ -395,3 +418,7 @@ print("Read by id:")
 print(booking.read_by_id(1))
 print(booking.update(2, 150))
 print(booking.delete(1))
+print("Bookings in JSON format:")
+print(booking.to_json())
+print("\nBookings in XML format:")
+print(booking.to_xml())
