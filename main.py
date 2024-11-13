@@ -179,96 +179,98 @@ class Booking:
     def create(self, person, event, booking_seat_num):
 
         if isinstance(event, SportEvent):
-            while True:
-                if event.get_booked_tickets() < booking_seat_num <= len(event.booking_seat):
-                    if booking_seat_num in event.booking_seat:
-                        event.booking_seat.remove(booking_seat_num)
-                        Booking.booking_id_counter += 1
-                        booking_ver = {
-                            'booking_id': Booking.booking_id_counter,
-                            'person': person,
-                            'event': event,
-                            'Your seat': booking_seat_num
-                        }
-                        bok = event.get_free_tickets() - 1
-                        event.set_free_tickets(bok)
-                        self._bookings.append(booking_ver)
-                    else:
-                        while True:
-                            try:
-                                booking_seat_num = int(input("Sorry this seat is "
-                                                             "already booked.Please, choose another one: "))
-                                Booking.create(self, person, event, booking_seat_num)
-                                break
-                            except ValueError:
-                                print("Sorry this seat is already booked.Please, choose another one: ")
-
-                    return f"The reservation has been successfully completed, " \
-                           f"here is your unique id: {Booking.booking_id_counter}"
+            if event.get_booked_tickets() < booking_seat_num <= len(event.booking_seat):
+                if booking_seat_num in event.booking_seat:
+                    event.booking_seat.remove(booking_seat_num)
+                    Booking.booking_id_counter += 1
+                    booking_ver = {
+                        'booking_id': Booking.booking_id_counter,
+                        'person': person,
+                        'event': event,
+                        'Your seat': booking_seat_num
+                    }
+                    bok = event.get_free_tickets() - 1
+                    event.set_free_tickets(bok)
+                    self._bookings.append(booking_ver)
                 else:
                     while True:
                         try:
                             booking_seat_num = int(input("Sorry this seat is "
                                                          "already booked.Please, choose another one: "))
+                            Booking.create(self, person, event, booking_seat_num)
                             break
                         except ValueError:
                             print("Sorry this seat is already booked.Please, choose another one: ")
+
+                return f"The reservation has been successfully completed, " \
+                       f"here is your unique id: {Booking.booking_id_counter}"
+            else:
+                while True:
+                    try:
+                        booking_seat_num = int(input("Sorry this seat is "
+                                                     "already booked.Please, choose another one: "))
+                        Booking.create(self, person, event, booking_seat_num)
+                        break
+                    except ValueError:
+                        print("Sorry this seat is already booked.Please, choose another one: ")
         elif isinstance(event, Cinema):
             if person.get_age() < event.get_age_limit():
                 return "Sorry, u cant book ticket for this event"
-            while True:
-                if event.get_booked_tickets() < booking_seat_num <= (event.get_free_tickets()
-                                                                     + event.get_booked_tickets()):
-                    if booking_seat_num in event.booking_seat:
-                        event.booking_seat.remove(booking_seat_num)
-                        Booking.booking_id_counter += 1
-                        booking_ver = {
-                            'booking_id': Booking.booking_id_counter,
-                            'person': person,
-                            'event': event,
-                            'your seat': booking_seat_num
-                        }
-                        bok = event.get_free_tickets() - 1
-                        event.set_free_tickets(bok)
-                        self._bookings.append(booking_ver)
-                        return (f"The reservation has been successfully completed, here is "
-                                f"your unique id: {Booking.booking_id_counter}")
+            if event.get_booked_tickets() < booking_seat_num <= (event.get_free_tickets()
+                                                                 + event.get_booked_tickets()):
+                if booking_seat_num in event.booking_seat:
+                    event.booking_seat.remove(booking_seat_num)
+                    Booking.booking_id_counter += 1
+                    booking_ver = {
+                        'booking_id': Booking.booking_id_counter,
+                        'person': person,
+                        'event': event,
+                        'your seat': booking_seat_num
+                    }
+                    bok = event.get_free_tickets() - 1
+                    event.set_free_tickets(bok)
+                    self._bookings.append(booking_ver)
+                    return (f"The reservation has been successfully completed, here is "
+                            f"your unique id: {Booking.booking_id_counter}")
                 else:
                     while True:
                         try:
-                            booking_seat_num = int(input("Sorry this seat is already booked."
-                                                         "Please, choose another one: "))
+                            booking_seat_num = int(input("Sorry this seat is "
+                                                         "already booked.Please, choose another one: "))
                             Booking.create(self, person, event, booking_seat_num)
                             break
                         except ValueError:
                             print("Sorry this seat is already booked.Please, choose another one: ")
+
+                return f"The reservation has been successfully completed, " \
+                       f"here is your unique id: {Booking.booking_id_counter}"
+            else:
+                while True:
+                    try:
+                        booking_seat_num = int(input("Sorry this seat is already booked."
+                                                     "Please, choose another one: "))
+                        Booking.create(self, person, event, booking_seat_num)
+                        break
+                    except ValueError:
+                        print("Sorry this seat is already booked.Please, choose another one: ")
         elif isinstance(event, Concert):
-            while True:
-                if event.get_booked_tickets() < booking_seat_num <= (event.get_free_tickets()
-                                                                     + event.get_booked_tickets()):
-                    if booking_seat_num in event.booking_seat:
-                        event.booking_seat.remove(booking_seat_num)
-                        Booking.booking_id_counter += 1
-                        booking_ver = {
-                            'booking_id': Booking.booking_id_counter,
-                            'person': person,
-                            'event': event,
-                            'your seat': booking_seat_num
-                        }
-                        bok = event.get_free_tickets() - 1
-                        event.set_free_tickets(bok)
-                        self._bookings.append(booking_ver)
-                        return (f"The reservation has been successfully completed, here "
-                                f"is your unique id: {Booking.booking_id_counter}")
-                    else:
-                        while True:
-                            try:
-                                booking_seat_num = int(input("Sorry this seat is already booked."
-                                                             "Please, choose another one: "))
-                                Booking.create(self, person, event, booking_seat_num)
-                                break
-                            except ValueError:
-                                print("Sorry this seat is already booked.Please, choose another one: ")
+
+            if event.get_booked_tickets() < booking_seat_num <= (event.get_free_tickets()
+                                                                 + event.get_booked_tickets()):
+                if booking_seat_num in event.booking_seat:
+                    event.booking_seat.remove(booking_seat_num)
+                    Booking.booking_id_counter += 1
+                    booking_ver = {
+                        'booking_id': Booking.booking_id_counter,
+                        'person': person,
+                        'event': event,
+                        'your seat': booking_seat_num
+                    }
+                    bok = event.get_free_tickets() - 1
+                    event.set_free_tickets(bok)
+                    self._bookings.append(booking_ver)
+                    return (f"The reservation has been successfully completed, here "
+                            f"is your unique id: {Booking.booking_id_counter}")
                 else:
                     while True:
                         try:
@@ -278,41 +280,50 @@ class Booking:
                             break
                         except ValueError:
                             print("Sorry this seat is already booked.Please, choose another one: ")
+            else:
+                while True:
+                    try:
+                        booking_seat_num = int(input("Sorry this seat is already booked."
+                                                     "Please, choose another one: "))
+                        Booking.create(self, person, event, booking_seat_num)
+                        break
+                    except ValueError:
+                        print("Sorry this seat is already booked.Please, choose another one: ")
         elif isinstance(event, Theatre):
-            while True:
-                if event.get_booked_tickets() < booking_seat_num <= (event.get_free_tickets()
-                                                                     + event.get_booked_tickets()):
-                    if booking_seat_num in event.booking_seat:
-                        event.booking_seat.remove(booking_seat_num)
-                        Booking.booking_id_counter += 1
-                        booking_ver = {
-                            'booking_id': Booking.booking_id_counter,
-                            'person': person,
-                            'event': event,
-                            'your seat': booking_seat_num
-                        }
-                        bok = event.get_free_tickets() - 1
-                        event.set_free_tickets(bok)
-                        self._bookings.append(booking_ver)
-                        return (f"The reservation has been successfully completed, here is your "
-                                f"unique id: {Booking.booking_id_counter}")
-                    else:
-                        while True:
-                            try:
-                                booking_seat_num = int(input("Sorry this seat is already booked."
-                                                             "Please, choose another one: "))
-                                Booking.create(self, person, event, booking_seat_num)
-                                break
-                            except ValueError:
-                                print("Sorry this seat is already booked.Please, choose another one: ")
+
+            if event.get_booked_tickets() < booking_seat_num <= (event.get_free_tickets()
+                                                                 + event.get_booked_tickets()):
+                if booking_seat_num in event.booking_seat:
+                    event.booking_seat.remove(booking_seat_num)
+                    Booking.booking_id_counter += 1
+                    booking_ver = {
+                        'booking_id': Booking.booking_id_counter,
+                        'person': person,
+                        'event': event,
+                        'your seat': booking_seat_num
+                    }
+                    bok = event.get_free_tickets() - 1
+                    event.set_free_tickets(bok)
+                    self._bookings.append(booking_ver)
+                    return (f"The reservation has been successfully completed, here is your "
+                            f"unique id: {Booking.booking_id_counter}")
                 else:
                     while True:
                         try:
-                            booking_seat_num = (input("Sorry this seat is already booked.Please, choose another one: "))
+                            booking_seat_num = int(input("Sorry this seat is already booked."
+                                                         "Please, choose another one: "))
                             Booking.create(self, person, event, booking_seat_num)
                             break
                         except ValueError:
-                            print("Sorry this seat is already booked.Please, choose another one:")
+                            print("Sorry this seat is already booked.Please, choose another one: ")
+            else:
+                while True:
+                    try:
+                        booking_seat_num = (input("Sorry this seat is already booked.Please, choose another one: "))
+                        Booking.create(self, person, event, booking_seat_num)
+                        break
+                    except ValueError:
+                        print("Sorry this seat is already booked.Please, choose another one:")
 
     def read_all(self):
         return self._bookings
