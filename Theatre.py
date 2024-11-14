@@ -2,7 +2,7 @@ from Event import Event
 
 
 class Theatre(Event):
-
+    """Класс для представления мероприятий в театре"""
     def __init__(self, idd, event_name, date, location, price, free_tickets, booked_tickets, genre):
         Event.__init__(self, idd, event_name, date, location, price, free_tickets, booked_tickets)
         self._genre = genre
@@ -27,6 +27,7 @@ class Theatre(Event):
         }
 
     def get_the_booklet(self, item):
+        """Метод для получения буклета"""
         booklet = self._booklet.get(item)
         if booklet:
             return booklet

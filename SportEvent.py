@@ -2,6 +2,7 @@ from Event import Event
 
 
 class SportEvent(Event):
+    """Класс для представления спортивных мероприятий"""
     def __init__(self, idd, event_name, date, location, price, free_tickets, booked_tickets, sector):
         Event.__init__(self, idd, event_name, date, location, price, free_tickets, booked_tickets)
         self._sector = sector
@@ -11,6 +12,7 @@ class SportEvent(Event):
         self._order_souvenirs = []
 
     def order_food(self, item):
+        """Метод для заказа еды на спортивных мероприятиях"""
         if item in self._menu_food:
             self._price += 250
             self._order_food.append(item)
@@ -19,6 +21,7 @@ class SportEvent(Event):
             return "This is not on the menu"
 
     def order_souvenirs(self, item):
+        """Метод для заказа сувениров на спортивных мероприятиях"""
         if item in self._menu_souvenirs:
             self._price += 1000
             self._order_souvenirs.append(item)

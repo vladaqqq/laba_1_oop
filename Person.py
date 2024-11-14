@@ -1,4 +1,5 @@
 class Person:
+    """Класс для представления человека"""
     def __init__(self, name, age, mail, phone_number):
         self._name = name
         self._age = age

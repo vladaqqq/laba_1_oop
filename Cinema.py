@@ -2,6 +2,7 @@ from Event import Event
 
 
 class Cinema(Event):
+    """Класс для представления мероприятий в кино"""
     def __init__(self, idd, event_name, date, location, price, free_tickets, booked_tickets, forms, age_limit):
         Event.__init__(self, idd, event_name, date, location, price, free_tickets, booked_tickets)
         self._forms = forms
@@ -10,6 +11,7 @@ class Cinema(Event):
         self._order_food_cinema = []
 
     def order_for_cinema(self, item):
+        """Метод для заказа еды в кино"""
         if item in self._menu_food_cinema:
             self._price += 150
             self._order_food_cinema.append(item)

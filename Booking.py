@@ -7,13 +7,14 @@ import xml.etree.ElementTree as ET
 
 
 class Booking:
+    """Класс для представления брони билетов"""
     booking_id_counter = 0
 
     def __init__(self):
         self._bookings = []
 
     def create(self, person, event, booking_seat_num):
-
+        """Метод для создания брони на мероприятие"""
         if isinstance(event, SportEvent):
             if event.get_booked_tickets() < booking_seat_num <= len(event.booking_seat):
                 if booking_seat_num in event.booking_seat:
@@ -90,7 +91,6 @@ class Booking:
                     except ValueError:
                         print("Sorry this seat is already booked.Please, choose another one: ")
         elif isinstance(event, Concert):
-
             if event.get_booked_tickets() < booking_seat_num <= (event.get_free_tickets()
                                                                  + event.get_booked_tickets()):
                 if booking_seat_num in event.booking_seat:
@@ -126,7 +126,6 @@ class Booking:
                     except ValueError:
                         print("Sorry this seat is already booked.Please, choose another one: ")
         elif isinstance(event, Theatre):
-
             if event.get_booked_tickets() < booking_seat_num <= (event.get_free_tickets()
                                                                  + event.get_booked_tickets()):
                 if booking_seat_num in event.booking_seat:
@@ -162,15 +161,18 @@ class Booking:
                         print("Sorry this seat is already booked.Please, choose another one:")
 
     def read_all(self):
+        """Метод для возвращения всех броней(чеков)"""
         return self._bookings
 
     def read_by_id(self, booking_id):
+        """Метод для возвращения всех броней(чеков) по id"""
         for boo in self._bookings:
             if boo['booking_id'] == booking_id:
                 return boo
         return "No booking found with this ID"
 
     def update(self, booking_id, new_seat):
+        """Метод для обновления брони"""
         for boo in self._bookings:
             if boo['booking_id'] == booking_id:
                 event = boo['event']
@@ -186,6 +188,7 @@ class Booking:
         return "No booking with this ID was found."
 
     def delete(self, bok_id):
+        """Метод для удаления брони"""
         bok = self.read_by_id(bok_id)
         if bok:
             self._bookings.remove(bok)
@@ -193,11 +196,13 @@ class Booking:
         return "Person not found."
 
     def to_json(self, filename="bookings.json"):
+        """Метод для форматирования в json"""
         with open(filename, "w", encoding="utf-8") as json_file:
             json.dump(self._bookings, json_file, default=lambda o: o.__dict__, indent=4)
         return f"Data has been saved to {filename}"
 
     def to_xml(self, filename="bookings.xml"):
+        """Метод для форматирования в xml"""
         root = ET.Element("bookings")
         for boo in self._bookings:
             booking_element = ET.SubElement(root, "booking")

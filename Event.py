@@ -1,4 +1,5 @@
 class Event:
+    """Класс для представления мероприятий"""
     def __init__(self, idd, event_name, date, location, price, free_tickets, booked_tickets):
         self._idd = idd
         self._event_name = event_name

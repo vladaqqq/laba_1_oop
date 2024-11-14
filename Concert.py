@@ -2,6 +2,7 @@ from Event import Event
 
 
 class Concert(Event):
+    """Класс для представления Концертных мероприятий"""
     def __init__(self, idd, event_name, date, location, price, free_tickets, booked_tickets, artist, genre_of_music):
         Event.__init__(self, idd, event_name, date, location, price, free_tickets, booked_tickets)
         self._genre_of_music = genre_of_music
@@ -10,6 +11,7 @@ class Concert(Event):
         self._key = 0
 
     def get_promo_code(self, item):
+        """Метод для получения скидки на меропртиятие"""
         if item in self._promo_code:
             if item == self._promo_code[0] and self._key == 0:
                 self._key += 1
